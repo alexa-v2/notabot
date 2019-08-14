@@ -71,7 +71,7 @@ async def neardc(event):
         )
 
 
-@register(outgoing=True, pattern="^.pingme$")
+@register(outgoing=True, pattern="^.ping$")
 async def pingme(pong):
     """ FOr .pingme command, ping the userbot from any chat.  """
     if not pong.text[0].isalpha() and pong.text[0] not in ("/", "#", "@", "!"):
