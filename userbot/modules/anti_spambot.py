@@ -30,7 +30,7 @@ async def welcome_mute(welcm):
 
             if welcm.user_added:
                 ignore = False
-                adder = welcm._added_by
+                adder = welcm.action_message.from_id
 
             async for admin in bot.iter_participants(welcm.chat_id, filter=ChannelParticipantsAdmins):
                 if admin.id == adder:
@@ -49,6 +49,9 @@ async def welcome_mute(welcm):
                     
             await sleep(5)
             spambot = False
+            
+            if not users:
+                return
 
             for user_id in users:
                 async for message in bot.iter_messages(
@@ -112,7 +115,7 @@ async def welcome_mute(welcm):
                                 "Info"
                         ):
                             if user.last_name == "Bot":
-                                reason = "Known Spam Bot"
+                                reason = "Known spambot"
                                 spambot = True
 
                     if spambot:
@@ -131,7 +134,8 @@ async def welcome_mute(welcm):
                         await welcm.reply(
                             "@admins\n"
                             "`ANTI SPAMBOT DETECTOR!\n"
-                            "THIS USER MATCHES MY ALGORITHMS AS A SPAMBOT!`")
+                            "THIS USER MATCHES MY ALGORITHMS AS A SPAMBOT!`\n"
+                            f"REASON: {reason}")
                 else:
                     await welcm.reply(
                         "`Potential Spambot Detected! Kicking away! "
@@ -151,7 +155,8 @@ async def welcome_mute(welcm):
                             await welcm.reply(
                                 "@admins\n"
                                 "`ANTI SPAMBOT DETECTOR!\n"
-                                "THIS USER MATCHES MY ALGORITHMS AS A SPAMBOT!`")
+                                "THIS USER MATCHES MY ALGORITHMS AS A SPAMBOT!`\n"
+                                f"REASON: {reason}")
 
                 if BOTLOG:
                     await welcm.client.send_message(
